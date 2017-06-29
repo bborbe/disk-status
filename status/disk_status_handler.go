@@ -25,12 +25,12 @@ func (s *statusHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	write(w, "available bytes", "bytestotal", usage.BytesTotal)
-	write(w, "used bytes", "bytesused", usage.BytesUsed)
-	write(w, "free bytes", "bytesfree", usage.BytesFree)
-	write(w, "available inodes", "inodestotal", usage.InodesTotal)
-	write(w, "used inodes", "inodesused", usage.InodesUsed)
-	write(w, "free inodes", "inodesfree", usage.InodesFree)
+	write(w, "available bytes", "diskstatus_bytestotal", usage.BytesTotal)
+	write(w, "used bytes", "diskstatus_bytesused", usage.BytesUsed)
+	write(w, "free bytes", "diskstatus_bytesfree", usage.BytesFree)
+	write(w, "available inodes", "diskstatus_inodestotal", usage.InodesTotal)
+	write(w, "used inodes", "diskstatus_inodesused", usage.InodesUsed)
+	write(w, "free inodes", "diskstatus_inodesfree", usage.InodesFree)
 }
 
 func write(w io.Writer, des string, name string, value uint64) {
