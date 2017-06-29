@@ -39,7 +39,7 @@ func do() error {
 }
 
 func createServer() *http.Server {
-	glog.V(2).Infof("create http server on %s", *portPtr)
+	glog.V(2).Infof("create http server on %d", *portPtr)
 	handler := status.NewHandler(*pathPtr)
 	return &http.Server{Addr: fmt.Sprintf(":%d", *portPtr), Handler: handler}
 }

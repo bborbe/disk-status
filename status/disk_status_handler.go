@@ -2,6 +2,7 @@ package status
 
 import (
 	"fmt"
+	"github.com/golang/glog"
 	"io"
 	"net/http"
 )
@@ -17,12 +18,14 @@ func NewHandler(path string) *statusHandler {
 }
 
 func (s *statusHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	glog.V(4).Infof("get metrics for path %s", s.path)
 	usage, err := DiskUsage(s.path)
 	if err != nil {
+		glog.V(4).Infof("get metrics for path %s failed: %v", s.path, err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	write(w, "available bytes ", "bytestotal", usage.BytesTotal)
+	write(w, "available bytes", "bytestotal", usage.BytesTotal)
 	write(w, "used bytes", "bytesused", usage.BytesUsed)
 	write(w, "free bytes", "bytesfree", usage.BytesFree)
 	write(w, "available inodes", "inodestotal", usage.InodesTotal)
