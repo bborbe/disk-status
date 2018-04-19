@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/bborbe/disk_utils/status"
 	flag "github.com/bborbe/flagenv"
-	"os"
 )
 
 var (

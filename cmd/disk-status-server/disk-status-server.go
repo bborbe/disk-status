@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	"runtime"
+
 	"github.com/bborbe/disk_utils/status"
 	flag "github.com/bborbe/flagenv"
 	"github.com/facebookgo/grace/gracehttp"
 	"github.com/golang/glog"
-	"net/http"
-	"runtime"
 )
 
 var (
