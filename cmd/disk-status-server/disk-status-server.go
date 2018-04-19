@@ -10,15 +10,9 @@ import (
 	"runtime"
 )
 
-const (
-	PARAMETER_PORT     = "port"
-	DEFAULT_PORT   int = 8080
-	PARAMETER_PATH     = "path"
-)
-
 var (
-	portPtr = flag.Int(PARAMETER_PORT, DEFAULT_PORT, "Port")
-	pathPtr = flag.String(PARAMETER_PATH, "/", "Path")
+	portPtr = flag.Int("port", 8080, "Port")
+	pathPtr = flag.String("path", "/", "Path")
 )
 
 func main() {
@@ -33,13 +27,6 @@ func main() {
 }
 
 func do() error {
-	server := createServer()
-	glog.V(2).Infof("start server")
-	return gracehttp.Serve(server)
-}
-
-func createServer() *http.Server {
-	glog.V(2).Infof("create http server on %d", *portPtr)
-	handler := status.NewHandler(*pathPtr)
-	return &http.Server{Addr: fmt.Sprintf(":%d", *portPtr), Handler: handler}
+	glog.V(0).Infof("create http server on %d", *portPtr)
+	return gracehttp.Serve(&http.Server{Addr: fmt.Sprintf(":%d", *portPtr), Handler: status.NewHandler(*pathPtr)})
 }

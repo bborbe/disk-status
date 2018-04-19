@@ -7,7 +7,7 @@ import (
 )
 
 func TestResumeFail(t *testing.T) {
-	if err := AssertThat(DEFAULT_PORT, Is(DEFAULT_PORT)); err != nil {
+	if err := AssertThat(8080, Is(8080)); err != nil {
 		t.Fatal(err)
 	}
 }
