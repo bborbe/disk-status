@@ -4,7 +4,7 @@ ifeq ($(VERSION),)
 	VERSION := $(shell git fetch --tags; git describe --tags `git rev-list --tags --max-count=1`)
 endif
 
-all: test install run
+all: test install
 
 install:
 	GOBIN=$(GOPATH)/bin GO15VENDOREXPERIMENT=1 go install cmd/disk-status/*.go
