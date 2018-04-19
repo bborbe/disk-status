@@ -1,5 +1,7 @@
 # Disk-Status
 
+Provides disk metrics for Prometheus.
+
 ## Metrics
 
 ```
