@@ -1,5 +1,5 @@
 FROM golang:1.12.0 AS build
-COPY . /go/src/github.com/bborbe/disk-status/cmd/disk-status-server
+COPY . /go/src/github.com/bborbe/disk-status
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags "-s" -a -installsuffix cgo -o /main ./src/github.com/bborbe/disk-status/cmd/disk-status-server
 CMD ["/bin/bash"]
 
