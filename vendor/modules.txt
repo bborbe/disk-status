@@ -1,0 +1,17 @@
+# github.com/bborbe/assert v0.0.0-20181116222016-22a6c6341415
+github.com/bborbe/assert
+# github.com/bborbe/disk_utils v0.0.0-20190302195152-ff5d6cecec8b
+github.com/bborbe/disk_utils/status
+# github.com/bborbe/flagenv v0.0.0-20181019084341-2956c4545608
+github.com/bborbe/flagenv
+# github.com/facebookgo/clock v0.0.0-20150410010913-600d898af40a
+github.com/facebookgo/clock
+# github.com/facebookgo/grace v0.0.0-20180706040059-75cf19382434
+github.com/facebookgo/grace/gracehttp
+github.com/facebookgo/grace/gracenet
+# github.com/facebookgo/httpdown v0.0.0-20180706035922-5979d39b15c2
+github.com/facebookgo/httpdown
+# github.com/facebookgo/stats v0.0.0-20151006221625-1b76add642e4
+github.com/facebookgo/stats
+# github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
+github.com/golang/glog

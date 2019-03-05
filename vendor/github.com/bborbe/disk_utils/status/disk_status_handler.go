@@ -2,9 +2,10 @@ package status
 
 import (
 	"fmt"
-	"github.com/golang/glog"
 	"io"
 	"net/http"
+
+	"github.com/golang/glog"
 )
 
 type statusHandler struct {

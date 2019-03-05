@@ -1,83 +1,67 @@
 REGISTRY ?= docker.io
 IMAGE ?= bborbe/disk-status
-ifeq ($(VERSION),)
-	VERSION := $(shell git fetch --tags; git describe --tags `git rev-list --tags --max-count=1`)
-endif
+VERSION  ?= latest
+VERSIONS = $(VERSION)
+VERSIONS += $(shell git fetch --tags; git tag -l --points-at HEAD)
 
 all: test install
+
+deps:
+	go get -u golang.org/x/lint/golint
+	go get -u github.com/kisielk/errcheck
+	go get -u golang.org/x/tools/cmd/goimports
 
 install:
 	GOBIN=$(GOPATH)/bin GO15VENDOREXPERIMENT=1 go install cmd/disk-status/*.go
 	GOBIN=$(GOPATH)/bin GO15VENDOREXPERIMENT=1 go install cmd/disk-status-server/*.go
 
+build:
+	@tags=""; \
+	for i in $(VERSIONS); do \
+		tags="$$tags -t $(REGISTRY)/$(IMAGE):$$i"; \
+	done; \
+	echo "docker build --no-cache --rm=true $$tags ."; \
+	docker build --no-cache --rm=true $$tags .
+
+clean:
+	@for i in $(VERSIONS); do \
+		echo "docker rmi $(REGISTRY)/$(IMAGE):$$i"; \
+		docker rmi $(REGISTRY)/$(IMAGE):$$i || true; \
+	done
+
+upload:
+	@for i in $(VERSIONS); do \
+		echo "docker push $(REGISTRY)/$(IMAGE):$$i"; \
+		docker push $(REGISTRY)/$(IMAGE):$$i; \
+	done
+
+versions:
+	@for i in $(VERSIONS); do echo $$i; done;
+
+precommit: ensure format test check
+	@echo "ready to commit"
+
+ensure:
+	GO111MODULE=on go mod tidy
+	GO111MODULE=on go mod vendor
+
+format:
+	@go get golang.org/x/tools/cmd/goimports
+	@find . -type f -name '*.go' -not -path './vendor/*' -exec gofmt -w "{}" +
+	@find . -type f -name '*.go' -not -path './vendor/*' -exec goimports -w "{}" +
+
 test:
 	go test -cover -race $(shell go list ./... | grep -v /vendor/)
 
-vet:
-	go tool vet .
-	go tool vet --shadow .
-
-lint:
-	golint -min_confidence 1 ./...
-
-errcheck:
-	errcheck -ignore '(Close|Write)' ./...
-
 check: lint vet errcheck
 
-goimports:
-	go get golang.org/x/tools/cmd/goimports
+lint:
+	@go get golang.org/x/lint/golint
+	@golint -min_confidence 1 $(shell go list ./... | grep -v /vendor/)
 
-format: goimports
-	find . -type f -name '*.go' -not -path './vendor/*' -exec gofmt -w "{}" +
-	find . -type f -name '*.go' -not -path './vendor/*' -exec goimports -w "{}" +
+vet:
+	@go vet $(shell go list ./... | grep -v /vendor/)
 
-prepare:
-	go get -u golang.org/x/tools/cmd/goimports
-	go get -u golang.org/x/lint/golint
-	go get -u github.com/kisielk/errcheck
-	go get -u github.com/bborbe/docker-utils/cmd/docker-remote-tag-exists
-
-clean:
-	docker rmi $(REGISTRY)/$(IMAGE)-build:$(VERSION)
-	docker rmi $(REGISTRY)/$(IMAGE):$(VERSION)
-
-buildgo:
-	CGO_ENABLED=0 GOOS=linux go build -ldflags "-s" -a -installsuffix cgo -o disk-status-server ./go/src/github.com/$(IMAGE)/cmd/disk-status-server
-
-build:
-	docker build --build-arg VERSION=$(VERSION) --no-cache --rm=true -t $(REGISTRY)/$(IMAGE)-build:$(VERSION) -f ./Dockerfile.build .
-	docker run -t $(REGISTRY)/$(IMAGE)-build:$(VERSION) /bin/true
-	docker cp `docker ps -q -n=1 -f ancestor=$(REGISTRY)/$(IMAGE)-build:$(VERSION) -f status=exited`:/disk-status-server .
-	docker rm `docker ps -q -n=1 -f ancestor=$(REGISTRY)/$(IMAGE)-build:$(VERSION) -f status=exited`
-	docker build --no-cache --rm=true --tag=$(REGISTRY)/$(IMAGE):$(VERSION) -f Dockerfile.static .
-	rm disk-status-server
-
-upload:
-	docker push $(REGISTRY)/$(IMAGE):$(VERSION)
-
-trigger:
-	@go get github.com/bborbe/docker-utils/cmd/docker-remote-tag-exists
-	@exists=`docker-remote-tag-exists \
-		-registry=${REGISTRY} \
-		-repository="${IMAGE}" \
-		-credentialsfromfile \
-		-tag="${VERSION}" \
-		-logtostderr \
-		-v=0`; \
-	trigger="build"; \
-	if [ "$${exists}" = "true" ]; then \
-		trigger="skip"; \
-	fi; \
-	echo $${trigger}
-
-run:
-	docker run \
-	-p 9090:9090 \
-	-e PORT=9090 \
-	-e PATH=/volume \
-	-v /tmp:/volume \
-	$(REGISTRY)/bborbe/disk-status:$(VERSION) \
-	-logtostderr \
-	-v=0
-
+errcheck:
+	@go get github.com/kisielk/errcheck
+	@errcheck -ignore '(Close|Write|Fprint)' $(shell go list ./... | grep -v /vendor/)
