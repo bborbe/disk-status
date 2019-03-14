@@ -4,16 +4,12 @@ VERSION  ?= latest
 VERSIONS = $(VERSION)
 VERSIONS += $(shell git fetch --tags; git tag -l --points-at HEAD)
 
-all: test install
+all: test
 
 deps:
 	go get -u golang.org/x/lint/golint
 	go get -u github.com/kisielk/errcheck
 	go get -u golang.org/x/tools/cmd/goimports
-
-install:
-	GOBIN=$(GOPATH)/bin GO15VENDOREXPERIMENT=1 go install cmd/disk-status/*.go
-	GOBIN=$(GOPATH)/bin GO15VENDOREXPERIMENT=1 go install cmd/disk-status-server/*.go
 
 build:
 	@tags=""; \
@@ -38,7 +34,7 @@ upload:
 versions:
 	@for i in $(VERSIONS); do echo $$i; done;
 
-precommit: ensure format test check
+precommit: ensure format test check addlicense
 	@echo "ready to commit"
 
 ensure:
@@ -65,3 +61,7 @@ vet:
 errcheck:
 	@go get github.com/kisielk/errcheck
 	@errcheck -ignore '(Close|Write|Fprint)' $(shell go list ./... | grep -v /vendor/)
+
+addlicense:
+	go get github.com/google/addlicense
+	addlicense -c "Benjamin Borbe" -y 2019 -l bsd ./*.go ./disk/*.go
