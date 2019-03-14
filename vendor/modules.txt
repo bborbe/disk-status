@@ -42,6 +42,8 @@ github.com/onsi/gomega/matchers/support/goraph/bipartitegraph
 github.com/onsi/gomega/matchers/support/goraph/edge
 github.com/onsi/gomega/matchers/support/goraph/node
 github.com/onsi/gomega/matchers/support/goraph/util
+# github.com/pkg/errors v0.8.1
+github.com/pkg/errors
 # golang.org/x/net v0.0.0-20180906233101-161cd47e91fd
 golang.org/x/net/html/charset
 golang.org/x/net/html

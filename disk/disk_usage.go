@@ -5,6 +5,7 @@
 package disk
 
 import (
+	"github.com/pkg/errors"
 	"syscall"
 )
 
@@ -23,7 +24,7 @@ func Usage(path string) (*Status, error) {
 	fs := syscall.Statfs_t{}
 	err := syscall.Statfs(path, &fs)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "get disk status for path '%s' failed", path)
 	}
 	var disk Status
 	disk.BytesTotal = fs.Blocks * uint64(fs.Bsize)

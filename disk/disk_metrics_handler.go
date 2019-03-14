@@ -27,7 +27,7 @@ func (s *metricsHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request) 
 	glog.V(4).Infof("get metrics for path %s", s.path)
 	usage, err := Usage(s.path)
 	if err != nil {
-		glog.V(1).Infof("get metrics for path %s failed: %v", s.path, err)
+		glog.Warning(err)
 		http.Error(resp, err.Error(), http.StatusInternalServerError)
 		return
 	}
