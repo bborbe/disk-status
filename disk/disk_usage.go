@@ -5,8 +5,9 @@
 package disk
 
 import (
-	"github.com/pkg/errors"
 	"syscall"
+
+	"github.com/pkg/errors"
 )
 
 // Status contains disk informations.
