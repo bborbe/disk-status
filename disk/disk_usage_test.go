@@ -5,9 +5,10 @@
 package disk_test
 
 import (
-	"github.com/bborbe/disk-status/disk"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+
+	"github.com/bborbe/disk-status/disk"
 )
 
 var _ = Describe("Disk Usage", func() {

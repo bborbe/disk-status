@@ -13,9 +13,10 @@ import (
 	"runtime"
 	"syscall"
 
-	"github.com/bborbe/disk-status/disk"
 	flag "github.com/bborbe/flagenv"
 	"github.com/golang/glog"
+
+	"github.com/bborbe/disk-status/disk"
 )
 
 func main() {
