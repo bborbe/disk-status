@@ -308,8 +308,8 @@ func main() {
 
 	if len(originPaths) == 1 && originPaths[0] == "-" {
 		originPaths[0] = reviser.StandardInput
-		if err := validateRequiredParam(originPaths[0]); err != nil {
-			printUsageAndExit(err)
+		if isTerminal(os.Stdin) {
+			fmt.Fprintln(os.Stderr, "reading from stdin, press Ctrl+D when done...")
 		}
 	}
 
@@ -368,13 +368,22 @@ func main() {
 				if err != nil {
 					log.Fatalf("Failed to find unformatted files %s: %+v\n", originPath, err)
 				}
-				fmt.Printf("%s\n", unformattedFiles.String())
-				continue
+
+				if unformattedFiles != nil {
+					fmt.Printf("%s\n", unformattedFiles.String())
+					if *setExitStatus {
+						os.Exit(1)
+					}
+				}
+
+				return
 			}
+
 			err := reviser.NewSourceDir(originProjectName, originPath, *isRecursive, excludes).Fix(options...)
 			if err != nil {
 				log.Fatalf("Failed to fix directory %s: %+v\n", originPath, err)
 			}
+
 			continue
 		}
 
@@ -473,15 +482,12 @@ func resultPostProcess(hasChange bool, originFilePath string, formattedOutput []
 	}
 }
 
-func validateRequiredParam(filePath string) error {
-	if filePath == reviser.StandardInput {
-		stat, _ := os.Stdin.Stat()
-		if stat.Mode()&os.ModeNamedPipe == 0 {
-			// no data on stdin
-			return errors.New("no data on stdin")
-		}
+func isTerminal(f *os.File) bool {
+	stat, err := f.Stat()
+	if err != nil {
+		return false
 	}
-	return nil
+	return stat.Mode()&os.ModeCharDevice != 0
 }
 
 func printDeprecations(deprecatedMessagesCh chan string) {

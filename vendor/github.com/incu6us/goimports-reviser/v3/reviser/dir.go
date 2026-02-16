@@ -20,7 +20,8 @@ const (
 )
 
 var (
-	currentPaths = []string{".", "." + string(filepath.Separator)}
+	defaultExcludes = []string{".git", ".idea", ".vscode"}
+	currentPaths    = []string{".", "." + string(filepath.Separator)}
 )
 
 var (
@@ -48,6 +49,9 @@ func NewSourceDir(projectName string, path string, isRecursive bool, excludes st
 	}
 
 	if err == nil {
+		for _, d := range defaultExcludes {
+			patterns = append(patterns, filepath.Join(absPath, d))
+		}
 		segs := strings.Split(excludes, ",")
 		for _, seg := range segs {
 			p := strings.TrimSpace(seg)
@@ -121,6 +125,10 @@ func (d *SourceDir) Find(options ...SourceFileOption) (*UnformattedCollection, e
 		return nil, fmt.Errorf("failed to walk dif: %w", err)
 	}
 
+	if len(badFormattedCollection) == 0 {
+		return nil, nil
+	}
+
 	return newUnformattedCollection(badFormattedCollection), nil
 }
 
@@ -176,6 +184,10 @@ func (c *UnformattedCollection) List() []string {
 }
 
 func (c *UnformattedCollection) String() string {
+	if c == nil {
+		return ""
+	}
+
 	var builder strings.Builder
 	for i, file := range c.list {
 		builder.WriteString(file)
