@@ -42,3 +42,11 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 - Use deps instead glide
 - Include docker build
 - Include Jenkinsfile
+
+## Unreleased
+
+- Upgrade Go from 1.23.4 to 1.26.0
+- Update all dependencies to latest versions
+- Add GitHub Actions CI workflow for automated testing
+- Update Dockerfile base images (golang:1.26.0, alpine:3.23)
+
