@@ -1,3 +1,5 @@
+include tools.env
+
 REGISTRY ?= docker.io
 IMAGE ?= bborbe/disk-status
 VERSION  ?= latest
@@ -38,7 +40,7 @@ ensure:
 	rm -rf vendor
 
 format:
-	go run -mod=mod github.com/incu6us/goimports-reviser/v3 -project-name github.com/bborbe/disk-status -format -excludes vendor ./...
+	go run github.com/incu6us/goimports-reviser/v3@$(GOIMPORTS_REVISER_VERSION) -project-name github.com/bborbe/disk-status -format -excludes vendor ./...
 
 generate:
 	rm -rf mocks avro
@@ -53,10 +55,10 @@ vet:
 	go vet -mod=mod $(shell go list -mod=mod ./... | grep -v /vendor/)
 
 errcheck:
-	go run -mod=mod github.com/kisielk/errcheck -ignore '(Close|Write|Fprint)' $(shell go list -mod=mod ./... | grep -v /vendor/)
+	go run github.com/kisielk/errcheck@$(ERRCHECK_VERSION) -ignore '(Close|Write|Fprint)' $(shell go list -mod=mod ./... | grep -v /vendor/)
 
 addlicense:
-	go run -mod=mod github.com/google/addlicense -c "Benjamin Borbe" -y $$(date +'%Y') -l bsd $$(find . -name "*.go" -not -path './vendor/*')
+	go run github.com/google/addlicense@$(ADDLICENSE_VERSION) -c "Benjamin Borbe" -y $$(date +'%Y') -l bsd $$(find . -name "*.go" -not -path './vendor/*')
 
 vulncheck:
-	go run -mod=mod golang.org/x/vuln/cmd/govulncheck $(shell go list -mod=mod ./... | grep -v /vendor/)
+	go run golang.org/x/vuln/cmd/govulncheck@$(GOVULNCHECK_VERSION) $(shell go list -mod=mod ./... | grep -v /vendor/)
