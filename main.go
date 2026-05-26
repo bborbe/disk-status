@@ -6,6 +6,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"net/http"
 	"os"
@@ -13,27 +14,33 @@ import (
 	"runtime"
 	"syscall"
 
-	flag "github.com/bborbe/flagenv"
+	"github.com/bborbe/argument/v2"
 	"github.com/golang/glog"
 
 	"github.com/bborbe/disk-status/disk"
 )
+
+type application struct {
+	Port int    `arg:"port" env:"PORT" default:"8080" usage:"Port"`
+	Path string `arg:"path" env:"PATH" default:"/" usage:"Path"`
+}
 
 func main() {
 	defer glog.Flush()
 	glog.CopyStandardLogTo("info")
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	_ = flag.Set("logtostderr", "true")
-	portPtr := flag.Int("port", 8080, "Port")
-	pathPtr := flag.String("path", "/", "Path")
-	flag.Parse()
 
 	ctx := contextWithSig(context.Background())
+	app := &application{}
+	if err := argument.Parse(ctx, app); err != nil {
+		glog.Exitf("parse args failed: %v", err)
+	}
 
-	glog.V(0).Infof("create http server on %d", *portPtr)
+	glog.V(0).Infof("create http server on %d", app.Port)
 	server := &http.Server{
-		Addr:    fmt.Sprintf(":%d", *portPtr),
-		Handler: disk.NewMetricsHandler(*pathPtr),
+		Addr:    fmt.Sprintf(":%d", app.Port),
+		Handler: disk.NewMetricsHandler(app.Path),
 	}
 	go func() {
 		select {
