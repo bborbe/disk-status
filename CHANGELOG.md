@@ -8,40 +8,48 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
-## 1.2.7
+## v1.2.8
+
+- Migrate to tools.env + Makefile @version pattern
+- Remove tools.go, drop vendor directory
+- Update Go to 1.26.3, Dockerfile base images to latest
+- Update dependencies (glog, gomega, go-cmp, net, sys, text)
+- Add GitHub Actions CI workflow
+
+## v1.2.7
 
 - Migrate to tools.env + Makefile @version pattern; remove tools.go
 
-## 1.2.6
+## v1.2.6
 
 - Go mod update
 
-## 1.2.5
+## v1.2.5
 
 - Go mod update
 
-## 1.2.4
+## v1.2.4
 
 - Go mod update
 
-## 1.2.3
+## v1.2.3
 
 - Go mod update
 
-## 1.2.2
+## v1.2.2
 
 - Go mod upgrade
 
-## 1.2.1
+## v1.2.1
 
 - Cleanup
 
-## 1.2.0
+## v1.2.0
 
 - Use go modules
 - Allow multi tags
 
-## 1.1.0
+## v1.1.0
 
 - Use deps instead glide
 - Include docker build
