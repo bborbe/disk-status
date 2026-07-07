@@ -8,6 +8,12 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.2.11
+
+- bump alpine base image to 3.24
+- bump bborbe/argument, collection, errors, math, parse, run, time, validation deps
+- bump getsentry/sentry-go, prometheus, golang.org/x deps
+
 ## v1.2.10
 
 - security: bump golang.org/x/net to v0.55.0 (CVE-2026-25680)
