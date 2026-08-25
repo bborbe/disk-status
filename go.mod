@@ -3,7 +3,7 @@ module github.com/bborbe/disk-status
 go 1.27.0
 
 require (
-	github.com/bborbe/argument/v2 v2.12.36
+	github.com/bborbe/argument/v2 v2.12.37
 	github.com/golang/glog v1.2.5
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.42.1
@@ -11,13 +11,13 @@ require (
 )
 
 require (
-	github.com/bborbe/collection v1.20.23 // indirect
+	github.com/bborbe/collection v1.20.24 // indirect
 	github.com/bborbe/errors v1.5.20 // indirect
-	github.com/bborbe/math v1.3.21 // indirect
+	github.com/bborbe/math v1.4.5 // indirect
 	github.com/bborbe/parse v1.10.21 // indirect
 	github.com/bborbe/run v1.9.37 // indirect
 	github.com/bborbe/time v1.27.10 // indirect
-	github.com/bborbe/validation v1.4.21 // indirect
+	github.com/bborbe/validation v1.4.22 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
