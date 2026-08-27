@@ -3,7 +3,7 @@ module github.com/bborbe/disk-status
 go 1.27.0
 
 require (
-	github.com/bborbe/argument/v2 v2.12.37
+	github.com/bborbe/argument/v2 v2.13.0
 	github.com/golang/glog v1.2.5
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.42.1
@@ -12,16 +12,16 @@ require (
 
 require (
 	github.com/bborbe/collection v1.20.24 // indirect
-	github.com/bborbe/errors v1.5.20 // indirect
-	github.com/bborbe/math v1.4.5 // indirect
-	github.com/bborbe/parse v1.10.21 // indirect
-	github.com/bborbe/run v1.9.37 // indirect
-	github.com/bborbe/time v1.27.10 // indirect
-	github.com/bborbe/validation v1.4.22 // indirect
+	github.com/bborbe/errors v1.6.0 // indirect
+	github.com/bborbe/math v1.4.7 // indirect
+	github.com/bborbe/parse v1.11.0 // indirect
+	github.com/bborbe/run v1.10.0 // indirect
+	github.com/bborbe/time v1.27.11 // indirect
+	github.com/bborbe/validation v1.4.23 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
-	github.com/getsentry/sentry-go v0.48.0 // indirect
+	github.com/getsentry/sentry-go v0.49.0 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/nxadm/tail v1.4.8 // indirect
