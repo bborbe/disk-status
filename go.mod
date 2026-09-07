@@ -1,6 +1,6 @@
 module github.com/bborbe/disk-status
 
-go 1.27.0
+go 1.27.1
 
 require (
 	github.com/bborbe/argument/v2 v2.13.2
